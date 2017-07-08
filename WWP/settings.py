@@ -76,10 +76,34 @@ WSGI_APPLICATION = 'WWP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+DB_name = ''
+user_name = ''
+Password = ''
+Host = ''
+Port = ''
+file_path = [os.path.join(BASE_DIR, 'DBConfig.cfg')][0]
+with open(file_path) as fp:
+    for line in fp:
+        if line.startswith("NAME"):
+            DB_name = line.split(':')[1].strip()
+        if line.startswith("USERNAME"):
+            user_name = line.split(':')[1].strip()
+        if line.startswith("PASSWORD"):
+            Password = line.split(':')[1].strip()
+        if line.startswith("HOST"):
+            Host = line.split(':')[1].strip()
+        if line.startswith("PORT"):
+            Port = line.split(':')[1].strip()
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': DB_name,
+        'USER': user_name,
+        'PASSWORD': Password,
+        'HOST': Host,
+        'PORT': Port,
     }
 }
 
