@@ -11,8 +11,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+from .utility import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import errno
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -76,24 +79,14 @@ WSGI_APPLICATION = 'WWP.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DB_name = ''
-user_name = ''
-Password = ''
-Host = ''
-Port = ''
-file_path = [os.path.join(BASE_DIR, 'DBConfig.cfg')][0]
-with open(file_path) as fp:
-    for line in fp:
-        if line.startswith("NAME"):
-            DB_name = line.split(':')[1].strip()
-        if line.startswith("USERNAME"):
-            user_name = line.split(':')[1].strip()
-        if line.startswith("PASSWORD"):
-            Password = line.split(':')[1].strip()
-        if line.startswith("HOST"):
-            Host = line.split(':')[1].strip()
-        if line.startswith("PORT"):
-            Port = line.split(':')[1].strip()
+
+config = read_config_file()
+
+DB_name = config[0]
+user_name = config[1]
+Password = config[2]
+Host = config[3]
+Port = config[4]
 
 
 DATABASES = {
