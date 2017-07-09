@@ -29,7 +29,9 @@ create table if not exists Subjects(
 
 create table if not exists Groups(
 	id int auto_increment primary key not null,
-    group_name varchar(10) not null
+    group_name varchar(10) not null,
+    dep_id int,
+    constraint FK_DepGroup foreign key(dep_id) references Departments(id)
 );
 
 create table if not exists Users(
