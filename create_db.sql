@@ -32,6 +32,8 @@ create table if not exists Groups(
     group_name varchar(10) not null,
     dep_id int,
     constraint FK_DepGroup foreign key(dep_id) references Departments(id)
+    on delete no action
+    on update cascade
 );
 
 create table if not exists Users(
