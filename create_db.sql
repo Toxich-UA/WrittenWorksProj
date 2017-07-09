@@ -6,12 +6,12 @@ use university_db;
 
 create table if not exists Faculties(
 	id int auto_increment primary key not null,
-    fac_name varchar(60) not null
+    fac_name varchar(100) not null
 )DEFAULT CHARSET = utf8;
 
 create table if not exists Departments(
 	id int auto_increment primary key not null,
-    dep_name varchar(40) not null,
+    dep_name varchar(100) not null,
     fac_id int not null,
     constraint FK_FacultyDep foreign key(fac_id) references Faculties(id)
     on delete no action
@@ -20,7 +20,7 @@ create table if not exists Departments(
 
 create table if not exists Subjects(
 	id int auto_increment primary key not null,
-    subj_name varchar(40) not null,
+    subj_name varchar(100) not null,
     dep_id int not null,
     constraint FK_DepSubj foreign key(dep_id) references Departments(id)
     on delete no action
@@ -41,10 +41,10 @@ create table if not exists Users(
     login varchar(50) not null,
     pass varchar(50) not null,
     regkey varchar(100) not null,
-    email varchar(40),
-    last_name varchar(20) not null,
-    first_name varchar(20) not null,
-    middle_name varchar(20) not null,
+    email varchar(70),
+    last_name varchar(50) not null,
+    first_name varchar(50) not null,
+    middle_name varchar(50) not null,
     primary key(id)
 )DEFAULT CHARSET = utf8;
 
@@ -83,7 +83,7 @@ create table if not exists Teachers_Subjects(
 
 create table if not exists Tasks(
 	id int auto_increment primary key not null,
-    task_name varchar(40) not null,
+    task_name varchar(100) not null,
     description text,
     start_time datetime not null,
     end_time datetime,
@@ -100,7 +100,7 @@ create table if not exists Tasks(
 
 create table if not exists Documents(
 	id int auto_increment primary key not null,
-    path varchar(100) not null,
+    path varchar(200) not null,
     user_id int not null,
     creation_time datetime not null,
     constraint FK_UserDoc foreign key(user_id) references Users(id)
