@@ -7,7 +7,7 @@ use university_db;
 create table if not exists Faculties(
 	id int auto_increment primary key not null,
     fac_name varchar(60) not null
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Departments(
 	id int auto_increment primary key not null,
@@ -16,7 +16,7 @@ create table if not exists Departments(
     constraint FK_FacultyDep foreign key(fac_id) references Faculties(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Subjects(
 	id int auto_increment primary key not null,
@@ -25,7 +25,7 @@ create table if not exists Subjects(
     constraint FK_DepSubj foreign key(dep_id) references Departments(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Groups(
 	id int auto_increment primary key not null,
@@ -34,30 +34,31 @@ create table if not exists Groups(
     constraint FK_DepGroup foreign key(dep_id) references Departments(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Users(
-	id int auto_increment primary key not null,
+	id int auto_increment not null,
     login varchar(50) not null,
     pass varchar(50) not null,
     regkey varchar(100) not null,
-    email varchar(40) not null,
+    email varchar(40),
     last_name varchar(20) not null,
     first_name varchar(20) not null,
-    middle_name varchar(20) not null
-);
+    middle_name varchar(20) not null,
+    primary key(id)
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Teachers(
 	id int auto_increment primary key not null,
-    user_id int not null,
+    user_id int unique not null,
 	constraint FK_UserTeacher foreign key(user_id) references Users(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Students(
 	id int auto_increment primary key not null,
-    user_id int not null,
+    user_id int not null unique,
     group_id int not null,
     constraint FK_UserStudent foreign key(user_id) references Users(id)
     on delete no action
@@ -65,7 +66,8 @@ create table if not exists Students(
     constraint FK_GroupStudent foreign key(group_id) references Groups(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
+
 
 create table if not exists Teachers_Subjects(
 	id int auto_increment primary key not null,
@@ -77,7 +79,7 @@ create table if not exists Teachers_Subjects(
     constraint FK_SubjectTSubj foreign key(teacher_id) references Subjects(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Tasks(
 	id int auto_increment primary key not null,
@@ -94,7 +96,7 @@ create table if not exists Tasks(
     constraint FK_GroupTask foreign key(group_id) references Groups(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Documents(
 	id int auto_increment primary key not null,
@@ -104,7 +106,7 @@ create table if not exists Documents(
     constraint FK_UserDoc foreign key(user_id) references Users(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
 
 create table if not exists Task_Doc(
 	id int auto_increment primary key not null,
@@ -116,4 +118,4 @@ create table if not exists Task_Doc(
     constraint FK_DocTDoc foreign key(task_id) references Documents(id)
     on delete no action
     on update cascade
-);
+)DEFAULT CHARSET = utf8;
