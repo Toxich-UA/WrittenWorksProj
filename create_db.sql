@@ -30,7 +30,7 @@ create table if not exists Subjects(
 create table if not exists Groups(
 	id int auto_increment primary key not null,
     group_name varchar(10) not null,
-    dep_id int,
+    dep_id int not null,
     constraint FK_DepGroup foreign key(dep_id) references Departments(id)
     on delete no action
     on update cascade
