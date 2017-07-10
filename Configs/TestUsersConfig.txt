@@ -1,0 +1,14 @@
+Конфиг учителя
+login = 'test_teacher1', 
+    
+pass = 'test_pass1'
+
+Конфиг студентов
+login = test_student1    
+pass = test_pass2
+
+login = test_student2    
+pass = test_pass3
+
+login = test_student3    
+pass = test_pass4
