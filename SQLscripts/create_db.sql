@@ -90,10 +90,14 @@ create table if not exists Tasks(
     estimated_time datetime,
     teacher_id int not null,
     group_id int not null,
+    subj_id int not null,
     constraint FK_TeacherTask foreign key(teacher_id) references Teachers(id)
     on delete no action
     on update cascade,
     constraint FK_GroupTask foreign key(group_id) references Groups(id)
+    on delete no action
+    on update cascade,
+    constraint FK_SubjectTask foreign key(subj_id) references Subjects(id)
     on delete no action
     on update cascade
 )DEFAULT CHARSET = utf8;
