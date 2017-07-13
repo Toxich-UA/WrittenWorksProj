@@ -38,7 +38,7 @@ create table if not exists StudGroup(
 
 create table if not exists User(
 	id int auto_increment not null,
-    login varchar(50) not null,
+    login varchar(50) unique not null,
     pass varchar(50) not null,
     regkey varchar(100) not null,
     email varchar(70),
