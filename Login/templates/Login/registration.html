@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вход</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static 'Login/js/bootstrap.js' %}"></script>
+    <link href="{% static 'Login/css/bootstrap.css' %} " rel="stylesheet">
+    <link href="{% static 'Login/css/my-style.css' %}" rel="stylesheet">
+    <link href="{% static 'Login/css/font-awesome.css' %}" rel="stylesheet">
+  </head>
+  <body>
+<div class="authorization-container text-center">
+  <div class="logo">Регистрация</div>
+  <div class="login-form-1">
+    <form id="forgot-password-form" class="text-left" method="post">
+      <div class="etc-login-form">
+        <p>Введите Ваш ключ аутентификации.</p>
+      </div>
+      <div class="login-form-main-message"></div>
+      <div class="main-login-form">
+        <div class="login-group">
+          <div class="form-group">
+            <label for="fp_email" class="sr-only">Ключ аутентификации</label>
+            <input type="text" class="form-control" id="fp_email" name="fp_email" placeholder="Ключ аутентификации">
+          </div>
+        </div>
+        <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+      </div>
+      <div class="etc-login-form">
+        <p><a href="#">Забыли пароль?</a></p>
+      </div>
+    </form>
+    </div>
+  </div>
+  </body>
+</html>
