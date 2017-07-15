@@ -7,6 +7,8 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 from django.db import models
+from django.db import connections
+from django.db.utils import OperationalError
 
 #Department database model
 class Department(models.Model):
@@ -40,6 +42,46 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'User'
+
+    #searching user in database
+    @staticmethod
+    def find_user(login):
+        try:
+            user = User.objects.get(login=login)
+            return [user.pk, user.pass_field]
+        except (User.DoesNotExist, OperationalError):
+            return None
+
+    #searching student
+    @staticmethod
+    def is_student(id):
+        try:
+            Student.objects.get(user_id=id)
+            return True
+        except (Student.DoesNotExist, OperationalError):
+            return False
+
+    #searching teacher
+    @staticmethod
+    def is_teacher(id):
+        try:
+            Teacher.objects.get(user_id=id)
+            return True
+        except (Teacher.DoesNotExist, OperationalError):
+            return False
+
+    #try to define user role
+    @staticmethod
+    def define_user_role(id):
+        if User.is_student(id):
+            return 'student'
+        elif User.is_teacher(id):
+            return 'teacher'
+        else:
+            return None
+
+
+
 
 #Studgroup database model
 class Studgroup(models.Model):
