@@ -48,6 +48,16 @@ create table if not exists User(
     primary key(id)
 )DEFAULT CHARSET = utf8;
 
+create table if not exists UserSession(
+	id int auto_increment primary key not null,
+    session_key varchar(250) unique not null,
+    user_id int,
+    ip_addr varchar(20) not null,
+    login_date datetime not null,
+    constraint FK_UserSession foreign key(user_id) references User(id)
+    on delete cascade
+)DEFAULT CHARSET = utf8;
+
 create table if not exists Teacher(
 	id int auto_increment primary key not null,
     user_id int unique not null,
