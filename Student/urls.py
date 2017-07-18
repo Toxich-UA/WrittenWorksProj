@@ -4,5 +4,5 @@ from django.views.generic import RedirectView
 from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = [
-    url(r'^$', view=load_profile, name='profile')
+    url(r'^$', view=load_stud_profile, name='student_profile')
 ]

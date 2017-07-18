@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
+from WWP.decorators import wwp_login_required
 
 # Create your views here.
-def load_profile(request):
+@wwp_login_required
+def load_stud_profile(request):
     return render(request, 'Student/login_success.html')

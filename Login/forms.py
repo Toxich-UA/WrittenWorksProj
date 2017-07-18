@@ -1,4 +1,4 @@
-from django import  forms
+from django import forms
 import hashlib
 
 #It is a form fields for Log in user

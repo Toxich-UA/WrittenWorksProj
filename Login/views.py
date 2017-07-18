@@ -15,7 +15,6 @@ def login(request):
         #form validation
         if form.is_valid():
             login = form.clean_username()
-
             #verifying does user exist
             userdata = User.find_user(login)
             if not userdata:
@@ -30,6 +29,8 @@ def login(request):
                     role = User.define_user_role(userdata[0])
                     #redirect to profile
                     if role:
+                        request.session['id'] = userdata[0]
+                        request.session['role'] = role
                         return redirect('/profile/{}/'.format(role))
                 else:
                     return render(request, 'Login/failed_login.html', context)
