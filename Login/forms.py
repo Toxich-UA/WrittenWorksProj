@@ -6,15 +6,14 @@ class LoginForm(forms.Form):
                                   {'id': 'lg_username',
                                    'class': 'form-control',
                                    'placeholder': 'Логин',
-                                   'required title':'Нельзя оставить это поле пустым',
-                                   'oninvalid': "this.setCustomValidity('Нельзя оставить это поле пустым')"}), required=False)
+                                   'required title':'Нельзя оставить это поле пустым',}),
+                                   required=False)
 
     lg_password = forms.CharField(widget=forms.PasswordInput(attrs=
                                   {'id': 'lg_password',
                                    'class': 'form-control',
                                    'placeholder': 'Пароль',
-                                   'required title':'Нельзя оставить это поле пустым',
-                                   'oninvalid': "this.setCustomValidity('Нельзя оставить это поле пустым')"}), required=False)
+                                   'required title':'Нельзя оставить это поле пустым',}), required=False)
 
     lg_remember = forms.BooleanField(widget=forms.CheckboxInput(attrs=
                                      {'id': 'lg_remember'}), required=False)
@@ -31,8 +30,7 @@ class LoginWithKeyForm(forms.Form):
                                                       {'id': 'fp_email',
                                                        'class': 'form-control',
                                                        'placeholder': 'Ключ аутентификации',
-                                                       'required title':'Нельзя оставить это поле пустым',
-                                                       'oninvalid' : "this.setCustomValidity('Нельзя оставить это поле пустым')"}), required=False)
+                                                       'required title':'Нельзя оставить это поле пустым',}), required=False)
 
     def cleaned_regkey(self):
         return self.cleaned_data['fp_email']

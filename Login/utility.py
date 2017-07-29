@@ -1,4 +1,4 @@
-from django.http import HttpRequest
+PROFILE_URL_PATTERN = '/profile/{}/'
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')

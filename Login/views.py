@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Permission
-from .utility import get_client_ip
+from .utility import get_client_ip, PROFILE_URL_PATTERN as url_pattern
 from .models import User
 from .forms import LoginForm, LoginWithKeyForm
 from django.conf import settings
 
 # Create your views here.
-#Simple login view processing
+# Simple login view processing
 def login_view(request):
+    login_failed_template = 'Login/failed_login.html'
+    login_template = 'Login/index.html'
     if request.method == 'POST':
         #creating form
         form = LoginForm(request.POST)
@@ -24,33 +26,35 @@ def login_view(request):
             #verifying does user exist or password is correct
             user = authenticate(request=request, username=login_field, password=password)
             if not user:
-                return render(request, 'Login/failed_login.html', context)
+                return render(request, login_failed_template, context)
             else:
                 login(request, user)
                 role = User.define_user_role(user.pk)
-                #redirect to profile
                 if role:
+                    # remember role and userIP in session
                     request.session['role'] = role
                     request.session['_auth_ip'] = get_client_ip(request)
                     if remember:
                         request.session.set_expiry(settings.INFINITE_SESSION)
+                    # checking permissions
                     perm = user.has_perm('Login.{}_rights'.format(role))
                     if not perm:
                         permission = Permission.objects.get(codename='{}_rights'.format(role))
                         user.user_permissions.add(permission)
-                    return redirect('/profile/{}/'.format(role))
+                    # redirect to profile
+                    return redirect(url_pattern.format(role))
                 else:
-                    return render(request, 'Login/failed_login.html', context)
+                    return render(request, login_failed_template, context)
     else:
         if request.user.is_authenticated and 'role' in request.session.keys():
             role = request.session['role']
-            return redirect('/profile/{}/'.format(role))
+            return redirect(url_pattern.format(role))
 
         form = LoginForm()
         context = {
             'loginform': form,
         }
-        return render(request, 'Login/index.html', context)
+        return render(request, login_template, context)
 
 # Logout user
 def logout_view(request):
@@ -59,6 +63,8 @@ def logout_view(request):
 
 # Log user in using regkey
 def registration(request):
+    login_key_template = 'Login/registration.html'
+    login_key_failed_template = 'Login/failed_key.html'
     if request.method == 'POST':
         #creating form
         form = LoginWithKeyForm(request.POST)
@@ -72,11 +78,10 @@ def registration(request):
             #verifying does user exist or password is correct
             user = authenticate(request=request, password=password)
             if not user:
-                return render(request, 'Login/failed_key.html', context)
+                return render(request, login_key_failed_template, context)
             else:
                 login(request, user)
                 role = User.define_user_role(user.pk)
-                #redirect to profile
                 if role:
                     request.session['role'] = role
                     request.session['_auth_ip'] = get_client_ip(request)
@@ -86,16 +91,17 @@ def registration(request):
                     if not perm:
                         permission = Permission.objects.get(codename='{}_rights'.format(role))
                         user.user_permissions.add(permission)
-                    return redirect('/profile/{}/'.format(role))
+                    # redirect to profile
+                    return redirect(url_pattern.format(role))
                 else:
-                    return render(request, 'Login/failed_key.html', context)
+                    return render(request, login_key_failed_template, context)
     else:
         if request.user.is_authenticated and 'role' in request.session.keys():
             role = request.session['role']
-            return redirect('/profile/{}/'.format(role))
+            return redirect(url_pattern.format(role))
 
         form = LoginWithKeyForm()
         context = {
             'loginkeyform': form,
         }
-        return render(request, 'Login/registration.html', context)
+        return render(request, login_key_template, context)
