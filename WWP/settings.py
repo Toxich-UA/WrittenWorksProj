@@ -11,39 +11,65 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-from .utility import *
+from .utility import read_config_file
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import errno
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
-
+config = read_config_file()
+DB_name = config[0]
+user_name = config[1]
+Password = config[2]
+Host = config[3]
+Port = config[4]
+Secret_key = config[5]
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@s!tu8-1%+28bsy@@gmw6zf-rqu+-2(@^dot)j8tk6*vw=ke&z'
+SECRET_KEY = Secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.auth',
 
     'Login',
     'Student',
     'Teacher',
+]
+
+PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
+
+AUTH_USER_MODEL = 'Login.User'
+
+LOGIN_URL = '/login/'
+
+AUTHENTICATION_BACKENDS = [
+    # import custom auth backend
+    'Login.backends.WWP_AuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SESSION_ENGINE = 'Login.models'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# time in minutes
+# 60min*24hours*365days*100years
+INFINITE_SESSION = 3153600000
+
+LOGIN_REQUIRED_URLS = [
+    r'/profile/student/(.*)$',
+    r'/profile/teacher/(.*)$',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +80,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # import custom auth middleware
+    'WWP.utility.RequireLoginMiddleware',
 ]
+
+
 
 ROOT_URLCONF = 'WWP.urls'
 
@@ -80,16 +110,6 @@ WSGI_APPLICATION = 'WWP.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-
-config = read_config_file()
-
-DB_name = config[0]
-user_name = config[1]
-Password = config[2]
-Host = config[3]
-Port = config[4]
-
 
 DATABASES = {
     'default': {
@@ -127,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'uk-UA'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
