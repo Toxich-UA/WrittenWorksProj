@@ -1,7 +1,16 @@
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
-from WWP.decorators import wwp_login_required
+
+#installed using pip install user_agents
+from user_agents import parse
 
 # Create your views here.
-@wwp_login_required
+@permission_required(perm='Login.student_rights')
 def load_stud_profile(request):
-    return render(request, 'Student/login_success.html')
+    request.session['new'] = True
+    user_agent = parse(request.META['HTTP_USER_AGENT'])
+    context = {
+        'agent': '{} {}'.format(user_agent.browser.family, user_agent.browser.version_string),
+        'user': request.user.last_name
+    }
+    return render(request, 'Student/login_success.html', context)

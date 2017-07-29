@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Вход совершен успешно {{ sess_id }} {{ sess_role }}</h1>
+    <h1>Вход совершен успешно {{ user }} </h1>
+    <p>Вы вошли используя {{ agent }}</p>
+    <a href="{% url 'logout' %}">Exit</a>
 </body>
 </html>

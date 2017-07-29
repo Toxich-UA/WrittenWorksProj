@@ -14,9 +14,12 @@
   </head>
   <body>
 <div class="authorization-container text-center">
+  {% block alert %}
+  {% endblock %}
   <div class="logo">Регистрация</div>
   <div class="login-form-1">
     <form id="forgot-password-form" class="text-left" method="post">
+        {% csrf_token %}
       <div class="etc-login-form">
         <p>Введите Ваш ключ аутентификации.</p>
       </div>
@@ -25,7 +28,7 @@
         <div class="login-group">
           <div class="form-group">
             <label for="fp_email" class="sr-only">Ключ аутентификации</label>
-            <input type="text" class="form-control" id="fp_email" name="fp_email" placeholder="Ключ аутентификации">
+            {{ loginkeyform.fp_email }}
           </div>
         </div>
         <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
