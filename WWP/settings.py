@@ -61,11 +61,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SESSION_ENGINE = 'Login.models'
-
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # time in minutes
 # 60min*24hours*365days*100years
 INFINITE_SESSION = 3153600000
+TEMP_SESSION = 86400
 
 LOGIN_REQUIRED_URLS = [
     r'/profile/student/(.*)$',
@@ -81,7 +81,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # import custom auth middleware
-    'WWP.utility.RequireLoginMiddleware',
+    'Login.middleware.RequireLoginMiddleware',
 ]
 
 

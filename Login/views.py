@@ -36,6 +36,8 @@ def login_view(request):
                     request.session['_auth_ip'] = get_client_ip(request)
                     if remember:
                         request.session.set_expiry(settings.INFINITE_SESSION)
+                    else:
+                        request.session.set_expiry(settings.TEMP_SESSION)
                     # checking permissions
                     perm = user.has_perm('Login.{}_rights'.format(role))
                     if not perm:
