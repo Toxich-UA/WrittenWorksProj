@@ -14,7 +14,7 @@ class WWP_AuthBackend(object):
                 return user
             # usual auth way
             user = User.objects.get(login=username)
-            pwd_valid = check_password(password, user.password) or password == user.regkey
+            pwd_valid = check_password(password, user.password) #or password == user.regkey
             if pwd_valid:
                 request.session['_auth_user_id'] = user.pk
                 return user

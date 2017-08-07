@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return str('{} {}'.format(self.pk, self.last_name))
+        return str('{} {} {} {}'.format(self.pk, self.last_name, self.login, self.password))
 
     class Meta:
         verbose_name = 'user'
@@ -67,14 +67,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         return self.login
 
-    #searching user in database
-    @staticmethod
-    def find_user(login):
-        try:
-            user = User.objects.get(login=login)
-            return [user.pk, user.pass_field]
-        except (User.DoesNotExist, OperationalError):
-            return None
+    def update_login_credentials(self, login, password):
+        user = User.objects.get(id=self.pk)
+        user.login = login
+        user.password = password
+        user.save()
+
+    def destroy_registration_key(self):
+        user = User.objects.get(id=self.pk)
+        user.regkey = "deleted"
+        user.save()
 
     #searching student
     @staticmethod
