@@ -53,6 +53,7 @@ PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
 AUTH_USER_MODEL = 'Login.User'
 
 LOGIN_URL = '/login/'
+FIRST_ACCESS_URL = '/first_access/'
 
 AUTHENTICATION_BACKENDS = [
     # import custom auth backend
@@ -68,8 +69,7 @@ INFINITE_SESSION = 31536000
 TEMP_SESSION = 86400
 
 LOGIN_REQUIRED_URLS = [
-    r'/profile/student/(.*)$',
-    r'/profile/teacher/(.*)$',
+    r'/profile/(.*)$',
 ]
 
 MIDDLEWARE = [

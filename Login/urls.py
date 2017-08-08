@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^login/$', view=login_view, name='login'),
     url(r'^registration/$', view=registration, name='registration'),
     url(r'^first_access/$', view=first_access, name='first_access'),
-    url(r'^logout', view=logout_view, name='logout')
+    url(r'^logout', view=logout_view, name='logout'),
+    url(r'^validate_login/$', view=validate_login, name='validate_login'),
 ]

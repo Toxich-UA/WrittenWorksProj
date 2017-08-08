@@ -5,29 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Вход совершен успешно, {{ user.last_name }} </h1>
-
-{% if messages %}
-    {% for message in messages %}
-        <div
-                {% if message.tags %}
-                    class=" {% if message.tags == 'success' %} alert-success {% endif %}
-                            {% if message.tags == 'error' %} alert-danger {% endif %} "
-                {% endif %}>
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-
-{% if has_reg_key %}
-    <div>
-        <br>
-        {% include "Student/update_settitngs.html" %}
-    </div>
-{% endif %}
-
-<p>Вы вошли используя {{ agent }}</p>
-<a href="{% url 'logout' %}">Exit</a>
-
+    <h1>Вход совершен успешно</h1>
+    <h2>Ваш профиль</h2>
+    <p>ФИО: {{ last_name }} {{ first_name }} {{ middle_name }}<p>
+    <p>Факультет: {{ fac }}</p>
+    <p>Кафедра: {{ dept }}</p>
+    <p>Группа: {{ group }}</p>
+    <p>Вы вошли используя {{ agent }}</p>
+    <a href="{% url 'logout' %}">Exit</a>
 </body>
 </html>

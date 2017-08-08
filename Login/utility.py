@@ -1,11 +1,10 @@
 PROFILE_URL_PATTERN = '/profile/{}/'
 ERROR_TEMPLATE = 'Login/error.html'
 
-LOGIN_TEMPLATE = 'Login/index.html'
-LOGIN_FAILED_TEMPLATE = 'Login/failed_login.html'
+LOGIN_TEMPLATE = 'Login/login.html'
+FIRST_ACCESS_TEMPLATE = 'Login/first_access.html'
 
 REGISTRATION_TEMPLATE = 'Login/registration.html'
-REGISTRATION_FAILED_TEMPLATE = 'Login/failed_key.html'
 
 
 def get_client_ip(request):

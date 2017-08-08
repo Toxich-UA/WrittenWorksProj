@@ -3,10 +3,12 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Permission
+from django.http import JsonResponse
 
-from Login.property import FAIL_DATA_UPDATE, SUCCESS_DATA_UPDATE, PASSWORD_CONFIRMATION_FAIL
-from .utility import get_client_ip, PROFILE_URL_PATTERN, LOGIN_TEMPLATE, LOGIN_FAILED_TEMPLATE, ERROR_TEMPLATE, \
-    REGISTRATION_FAILED_TEMPLATE, REGISTRATION_TEMPLATE
+from Login.property import FAIL_DATA_UPDATE, SUCCESS_DATA_UPDATE, PASSWORD_CONFIRMATION_FAIL, LOGIN_IS_TAKEN, \
+    LOGIN_IS_FREE, WRONG_USERNAME_OR_PASSWORD, WRONG_REG_KEY
+from .utility import get_client_ip, PROFILE_URL_PATTERN, LOGIN_TEMPLATE, ERROR_TEMPLATE, \
+    REGISTRATION_TEMPLATE, FIRST_ACCESS_TEMPLATE
 from .models import User
 from .forms import LoginForm, LoginWithKeyForm, FirstAccessForm
 from django.conf import settings
@@ -27,7 +29,9 @@ def login_view(request):
             # verifying does user exist and password is correct
             user = authenticate(request=request, username=login_field, password=password)
             if not user:
-                return render(request, LOGIN_FAILED_TEMPLATE, context)
+                message = {'tag': messages.ERROR,
+                            'text': WRONG_USERNAME_OR_PASSWORD}
+                return _render_form_error_template(request, LOGIN_TEMPLATE, message, context)
             return _login_found_user(request, user, remember)
 
         else:
@@ -55,7 +59,9 @@ def registration(request):
             # find user by authentication key
             user = authenticate(request=request, password=form.cleaned_regkey())
             if not user:
-                return render(request, REGISTRATION_FAILED_TEMPLATE, context)
+                message = {'tag': messages.ERROR,
+                           'text': WRONG_REG_KEY}
+                return _render_form_error_template(request, REGISTRATION_TEMPLATE, message, context)
             return _login_found_user(request, user, False)
         else:
             return render(request, ERROR_TEMPLATE, status=400)
@@ -65,38 +71,60 @@ def registration(request):
     else:
         return render(request, ERROR_TEMPLATE, status=400)
 
-
 def first_access(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        if not request.user.has_reg_key:
+            return redirect(PROFILE_URL_PATTERN.format(request.session['role']))
+        user = request.user
+        first_access_form = FirstAccessForm()
+        context = {
+            'user': user,
+            'first_access_form': first_access_form,
+        }
+        return render(request, FIRST_ACCESS_TEMPLATE, context)
+    elif request.method == 'POST':
         form = FirstAccessForm(request.POST)
+        context = {
+            'user': request.user,
+            'first_access_form': form,
+        }
+
+        message = {
+            'text': SUCCESS_DATA_UPDATE,
+            'tag': messages.SUCCESS
+        }
 
         if form.is_valid():
 
             user = request.user
             new_login = form.get_login()
+            #request.session['new_login'] = new_login
             new_password = form.get_password()
             password_confirmation = form.get_confirm_password()
 
             if new_password != password_confirmation:
-                return _redirect_to_profile(request,
-                                            {'text': PASSWORD_CONFIRMATION_FAIL, 'tag': messages.ERROR},
-                                            request.session['role'])
+                message['text'] = PASSWORD_CONFIRMATION_FAIL
+                message['tag'] = messages.ERROR
+                return _render_form_error_template(request, FIRST_ACCESS_TEMPLATE, message, context)
 
-            user.update_login_credentials(new_login, make_password(new_password))
+            update_success = user.update_login_credentials(new_login, make_password(new_password))
+            if not update_success:
+                message['text'] = LOGIN_IS_TAKEN
+                message['tag'] = messages.ERROR
+                return _render_form_error_template(request, FIRST_ACCESS_TEMPLATE, message, context)
             logout(request)
 
             # verifying does user exist and password is correct
             user = authenticate(request=request, username=new_login, password=new_password)
             if not user:
-                return _redirect_to_profile(request,
-                                            {'text': FAIL_DATA_UPDATE, 'tag': messages.ERROR},
-                                            request.session['role'])
+                message['text'] = FAIL_DATA_UPDATE
+                message['tag'] = messages.ERROR
+                return _render_form_error_template(request, FIRST_ACCESS_TEMPLATE, message, context)
 
             # after the first access user's reg. key must be deleted
             user.destroy_registration_key()
-
             return _login_found_user(request, user, False,
-                                     {'text': SUCCESS_DATA_UPDATE, 'tag': messages.SUCCESS})
+                                     context)
 
         else:
             return render(request, ERROR_TEMPLATE, status=400)
@@ -104,6 +132,24 @@ def first_access(request):
     else:
         return render(request, ERROR_TEMPLATE, status=400)
 
+def validate_login(request):
+    login_value = request.GET.get('login_value')
+    if request.user.login != login_value:
+        is_taken = User.objects.filter(login=login_value).exists()
+    else:
+        is_taken = False
+
+    data = {}
+    if is_taken:
+        data['error_message'] = LOGIN_IS_TAKEN
+    else:
+        data['error_message'] = LOGIN_IS_FREE
+    return JsonResponse(data)
+
+def _render_form_error_template(request, template, message, context):
+    if message:
+        messages.add_message(request, message['tag'], message['text'])
+        return render(request, template, context)
 
 def _login_found_user(request, user, remember, message=None):
     role = User.define_user_role(user.pk)
@@ -122,14 +168,7 @@ def _login_found_user(request, user, remember, message=None):
         permission = Permission.objects.get(codename='{}_rights'.format(role))
         user.user_permissions.add(permission)
     # redirect to profile
-    return _redirect_to_profile(request, message, role)
-
-
-def _redirect_to_profile(request, message, user_role):
-    if message:
-        messages.add_message(request, message['tag'], message['text'])
-    return redirect(PROFILE_URL_PATTERN.format(user_role))
-
+    return redirect(PROFILE_URL_PATTERN.format(role))
 
 def _process_get(context, request, success_template):
     if request.user.is_authenticated and 'role' in request.session.keys():

@@ -6,7 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
-from django.db import models
+from django.db import models, IntegrityError
 from django.db.utils import OperationalError
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -33,7 +33,7 @@ class Faculty(models.Model):
 #User database model
 class User(AbstractBaseUser, PermissionsMixin):
     login = models.CharField(max_length=50, unique=True)
-    regkey = models.CharField(max_length=100)
+    regkey = models.CharField(max_length=100, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
@@ -71,12 +71,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         user = User.objects.get(id=self.pk)
         user.login = login
         user.password = password
-        user.save()
+        try:
+            user.save()
+        except IntegrityError:
+            return False
+        return True
 
     def destroy_registration_key(self):
         user = User.objects.get(id=self.pk)
-        user.regkey = "deleted"
+        user.regkey = None
         user.save()
+
+    @property
+    def has_reg_key(self):
+        return self.regkey is not None
 
     #searching student
     @staticmethod
@@ -106,10 +114,33 @@ class User(AbstractBaseUser, PermissionsMixin):
         else:
             return None
 
+    def get_user_profile_info(self, role):
+        if role == 'student':
+            try:
+                stud_info = Student.objects.get(user=self)
+                stud_dict = {'last_name': self.last_name,
+                             'first_name': self.first_name,
+                             'middle_name': self.middle_name,
+                             'group': stud_info.group.group_name,
+                             'dept': stud_info.group.dep.dep_name,
+                             'fac': stud_info.group.dep.fac.fac_name
+                             }
+                return stud_dict
+            except self.DoesNotExist:
+                return None
+        elif role == 'teacher':
+            try:
+                stud_dict = {'last_name': self.last_name,
+                             'first_name': self.first_name,
+                             'middle_name': self.middle_name}
+                return stud_dict
+            except self.DoesNotExist:
+                return None
+
 #Studgroup database model
 class Studgroup(models.Model):
     group_name = models.CharField(max_length=10)
-    dep = models.ForeignKey(Department, models.DO_NOTHING)
+    dep = models.ForeignKey('Department', models.DO_NOTHING)
 
     def __str__(self):
         return self.group_name

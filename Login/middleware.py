@@ -9,6 +9,7 @@ class RequireLoginMiddleware(object):
     def __init__(self, get_response):
         self.urls = tuple([compile(url) for url in settings.LOGIN_REQUIRED_URLS])
         self.require_login_path = settings.LOGIN_URL
+        self.require_update_credentials_path = settings.FIRST_ACCESS_URL
         self.get_response = get_response
         # One-time configuration and initialization.
 
@@ -31,5 +32,9 @@ class RequireLoginMiddleware(object):
             for url in self.urls:
                 if url.match(request.path):
                     return HttpResponseRedirect(self.require_login_path)
+        if request.user.is_authenticated and request.user.has_reg_key:
+            for url in self.urls:
+                if url.match(request.path):
+                    return HttpResponseRedirect(self.require_update_credentials_path)
 
         return response

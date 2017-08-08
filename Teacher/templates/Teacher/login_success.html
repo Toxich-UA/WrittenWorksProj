@@ -6,6 +6,9 @@
 </head>
 <body>
     <h1>Вход совершен успешно</h1>
+    <h2>Ваш профиль</h2>
+    <p>ФИО: {{ last_name }} {{ first_name }} {{ middle_name }}<p>
+    <p>Вы вошли используя {{ agent }}</p>
     <a href="{% url 'logout' %}">Exit</a>
 </body>
 </html>

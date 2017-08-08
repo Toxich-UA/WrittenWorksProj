@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    {% block javascript %}
+    {% endblock %}
+</head>
+<body>
+<h1>Вход совершен успешно, {{ user.last_name }} </h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <div
+                {% if message.tags %}
+                    class=" {% if message.tags == 'success' %}alert-success {% endif %}
+                            {% if message.tags == 'error' %}alert-danger {% endif %} "
+                {% endif %}>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+    <div>
+        <br>
+
+    <form method="post" action="{% url 'first_access' %}">
+    {% csrf_token %}
+        <div>
+        Pls, change these settings:
+        <div>
+            <label for="fa_login"></label>
+            {{ first_access_form.fa_login }}
+        </div>
+        <div>
+            <label for="fa_password"></label>
+            {{ first_access_form.fa_password }}
+        </div>
+        <div>
+            <label for="fa_confirm_password"></label>
+            {{ first_access_form.fa_confirm_password }}
+        </div>
+        </div>
+        <button type="submit">ГО ></button>
+    </form>
+    <script>
+        $("#lg_username").change(function () {
+            var login_value = $(this).val();
+            $.ajax({
+                url: '{% url "validate_login" %}',
+                data: {
+                'login_value': login_value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#error").html(data.error_message);
+                }
+            });
+
+        });
+    </script>
+
+    </div>
+<h3 id = "error"></h3>
+<a href="{% url 'logout' %}">Exit</a>
+
+</body>
+</html>
