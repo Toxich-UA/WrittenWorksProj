@@ -1,11 +1,10 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    {% block javascript %}
-    {% endblock %}
 </head>
 <body>
 <h1>Вход совершен успешно, {{ user.last_name }} </h1>
@@ -45,26 +44,13 @@
         </div>
         <button type="submit">ГО ></button>
     </form>
-    <script>
-        $("#lg_username").change(function () {
-            var login_value = $(this).val();
-            $.ajax({
-                url: '{% url "validate_login" %}',
-                data: {
-                'login_value': login_value
-                },
-                dataType: 'json',
-                success: function (data) {
-                    $("#error").html(data.error_message);
-                }
-            });
-
-        });
-    </script>
-
     </div>
 <h3 id = "error"></h3>
 <a href="{% url 'logout' %}">Exit</a>
-
+<script src="{% static "Login/js/validate_first_access.js" %}"
+            data-url="{% url "validate_login" %}"
+            data-LoginID="{{ first_access_form.fa_login.id_for_label }}"
+            data-PasswordID = "{{ first_access_form.fa_password.id_for_label }}"
+            data-ConfirmPassID = "{{ first_access_form.fa_confirm_password.id_for_label }}"></script>
 </body>
 </html>
