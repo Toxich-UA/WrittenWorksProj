@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
 
     'Login',
-    'Student',
-    'Teacher',
+    'Profile',
 ]
 
 PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)

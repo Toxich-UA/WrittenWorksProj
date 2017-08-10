@@ -9,7 +9,8 @@ var loginId = script_object.attr("data-LoginID");
 var passwordId = script_object.attr("data-PasswordID");
 var confirmPassId = script_object.attr("data-ConfirmPassID");
 
-var error_message = "Пароли не совпадают!";
+var error_confirm_message = "Пароли не совпадают!";
+var success_confirm_message = "Пароли совпадают";
 
 // login validation function
 $("#".concat(loginId)).change(function () {
@@ -31,6 +32,9 @@ $("#".concat(confirmPassId)).change(function () {
     var new_pass = $("#".concat(passwordId)).val();
     var conf_pass = $(this).val();
     if (new_pass != conf_pass) {
-        $("#error").html(error_message);
+        $("#error").html(error_confirm_message);
+    }
+    else if(new_pass == conf_pass){
+        $("#error").html(success_confirm_message);
     }
 });

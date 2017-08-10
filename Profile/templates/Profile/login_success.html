@@ -1,0 +1,11 @@
+{% extends "Profile/_profile_base.html" %}
+    {%  block profile_info %}
+        {% if role == 'student' %}
+            <p>ФИО: {{ last_name }} {{ first_name }} {{ middle_name }}<p>
+            <p>Факультет: {{ fac }}</p>
+            <p>Кафедра: {{ dept }}</p>
+            <p>Группа: {{ group }}</p>
+        {% elif role == 'teacher' %}
+            <p>ФИО: {{ last_name }} {{ first_name }} {{ middle_name }}<p>
+        {% endif %}
+    {% endblock %}
