@@ -141,9 +141,9 @@ def validate_login(request):
 
     data = {}
     if is_taken:
-        data['error_message'] = LOGIN_IS_TAKEN
+        data['message'] = False
     else:
-        data['error_message'] = LOGIN_IS_FREE
+        data['message'] = True
     return JsonResponse(data)
 
 def _render_form_error_template(request, template, message, context):

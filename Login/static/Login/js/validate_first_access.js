@@ -9,8 +9,10 @@ var loginId = script_object.attr("data-LoginID");
 var passwordId = script_object.attr("data-PasswordID");
 var confirmPassId = script_object.attr("data-ConfirmPassID");
 
-var error_confirm_message = "Пароли не совпадают!";
-var success_confirm_message = "Пароли совпадают";
+var login_is_free_msg = "<p class=\"text-success\"><span class=\"glyphicon glyphicon-ok-sign\"></span>Логин свободен</p>";
+var login_is_taken_msg = "<p class=\"text-danger\"><span class=\"glyphicon glyphicon-exclamation-sign\"></span>Логин занят</p>";
+var success_confirm_msg = "<p class=\"text-success\"><span class=\"glyphicon glyphicon-ok-sign\"></span>Пароли совпадают</p>";
+var error_confirm_msg = "<p class=\"text-danger\"><span class=\"glyphicon glyphicon-exclamation-sign\"></span>Пароли не совпадают</p>";
 
 // login validation function
 $("#".concat(loginId)).change(function () {
@@ -22,19 +24,24 @@ $("#".concat(loginId)).change(function () {
         },
         dataType: 'json',
         success: function (data) {
-            $("#error").html(data.error_message);
+            if(data.message == true) {
+                $("#login-message").html(login_is_free_msg);
+            }
+            else{
+                $("#login-message").html(login_is_taken_msg);
+            }
         }
     });
 });
 
 // checking password confirmation
-$("#".concat(confirmPassId)).change(function () {
+$("#".concat(confirmPassId)).bind('input', function () {
     var new_pass = $("#".concat(passwordId)).val();
     var conf_pass = $(this).val();
     if (new_pass != conf_pass) {
-        $("#error").html(error_confirm_message);
+        $("#confirm-pass-message").html(error_confirm_msg);
     }
     else if(new_pass == conf_pass){
-        $("#error").html(success_confirm_message);
+        $("#confirm-pass-message").html(success_confirm_msg);
     }
 });

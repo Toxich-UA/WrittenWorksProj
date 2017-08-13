@@ -1,56 +1,63 @@
+{% extends 'Login/_login_base.html' %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-</head>
-<body>
-<h1>Вход совершен успешно, {{ user.last_name }} </h1>
+{% block title %}First Access{% endblock %}
+{% block content %}
+    <div class="authorization-container text-center">
+        <div class="enter">Вы вошли как, {{ user.last_name }} </div>
+    <div class="logo">Пожалуйста, заполните следующие поля</div>
 
-{% if messages %}
-    {% for message in messages %}
-        <div
-                {% if message.tags %}
-                    class=" {% if message.tags == 'success' %}alert-success {% endif %}
-                            {% if message.tags == 'error' %}alert-danger {% endif %} "
-                {% endif %}>
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+    <div class="login-form-1">
+        {% if messages %}
+            {% for message in messages %}
+            <div
+                    {% if message.tags %}
+                        class=" {% if message.tags == 'success' %}alert alert-success {% endif %}
+                                {% if message.tags == 'error' %}alert alert-danger {% endif %} "
+                    {% endif %}>
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        <form id="first-access-form" class="text-left" method="post">
+            {% csrf_token %}
+            <div class="main-login-form">
+            <div class="login-group">
+                <div class="form-group">
+                    {{ first_access_form.fa_login }}
+                </div>
+                <div id="login-message">
 
+                </div>
+                <div class="form-group">
+                    {{ first_access_form.fa_password }}
+                </div>
+                <div class="form-group">
+                    {{ first_access_form.fa_confirm_password }}
+                </div>
+                <div id="confirm-pass-message">
 
-    <div>
-        <br>
+                </div>
 
-    <form method="post" action="{% url 'first_access' %}">
-    {% csrf_token %}
-        <div>
-        Pls, change these settings:
-        <div>
-            <label for="fa_login"></label>
-            {{ first_access_form.fa_login }}
+                <div class="form-group login-group-checkbox">
+                <input type="checkbox" id="fa_remember" name="lg_remember">
+                    <label for="fa_remember">Запомнить</label>
+                </div>
+            </div>
+            <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+            </div>
+        </form>
+        <div class="etc-login-form">
+            <p><a href="{% url 'logout' %}">Выйти из системы</a></p>
         </div>
-        <div>
-            <label for="fa_password"></label>
-            {{ first_access_form.fa_password }}
-        </div>
-        <div>
-            <label for="fa_confirm_password"></label>
-            {{ first_access_form.fa_confirm_password }}
-        </div>
-        </div>
-        <button type="submit">ГО ></button>
-    </form>
     </div>
-<h3 id = "error"></h3>
-<a href="{% url 'logout' %}">Exit</a>
+  </div>
+
+{% endblock %}
+
+{% block user_scripts %}
 <script src="{% static "Login/js/validate_first_access.js" %}"
             data-url="{% url "validate_login" %}"
             data-LoginID="{{ first_access_form.fa_login.id_for_label }}"
             data-PasswordID = "{{ first_access_form.fa_password.id_for_label }}"
             data-ConfirmPassID = "{{ first_access_form.fa_confirm_password.id_for_label }}"></script>
-</body>
-</html>
+{% endblock %}
