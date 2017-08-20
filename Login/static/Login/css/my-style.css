@@ -2,7 +2,6 @@
 html,
 body {
   background: #efefef;
-  padding: 10px;
   font-family: 'Varela Round';
 }
 /*=== 2. Anchor Link ===*/
@@ -269,7 +268,7 @@ label:hover:before {
 }
 
 .authorization-container{
-  padding:50px 0;
+  padding: 50px 0;
 }
 
 .text-success, .text-danger{
