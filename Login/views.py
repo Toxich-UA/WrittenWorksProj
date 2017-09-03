@@ -132,6 +132,7 @@ def first_access(request):
     else:
         return render(request, ERROR_TEMPLATE, status=400)
 
+# for ajax request
 def validate_login(request):
     login_value = request.GET.get('login_value')
     if request.user.login != login_value:
