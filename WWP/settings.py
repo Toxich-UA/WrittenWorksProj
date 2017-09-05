@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'Login',
     'Profile',
+    'Task',
 ]
 
 PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
