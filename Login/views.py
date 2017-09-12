@@ -146,6 +146,7 @@ def validate_login(request):
     else:
         data['message'] = True
     return JsonResponse(data)
+#############
 
 def _render_form_error_template(request, template, message, context):
     if message:

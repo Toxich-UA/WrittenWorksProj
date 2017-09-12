@@ -1,13 +1,9 @@
-{% extends "Login/_login_base.html" %}
+{% extends "Login/templates/Login/block/_login_base.html" %}
 
 {% block title %}{{ loginform.title }}{% endblock %}
 
 {% block content %}
-<div class="authorization-container text-center">
-    <div class="logo">{{ loginform.title }}</div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-        {% if messages %}
+    {% if messages %}
             {% for message in messages %}
                 <div
                         {% if message.tags %}
@@ -18,34 +14,34 @@
                 </div>
             {% endfor %}
         {% endif %}
-        </div>
-        <div class="col-md-4 col-md-offset-4 login-form-1">
-          <form id="login-form" class="text-left" method="post" action="{% url 'login' %}">
-              {% csrf_token %}
-            <div class="login-form-main-message"></div>
-            <div class="main-login-form">
-              <div class="login-group">
-                <div class="form-group">
-                  <label for="lg_username" class="sr-only"></label>
-                  {{ loginform.lg_username }}
-                </div>
-                <div class="form-group">
-                  <label for="lg_password" class="sr-only"></label>
-                  {{ loginform.lg_password }}
-                </div>
-                <div class="form-group login-group-checkbox">
-                  {{ loginform.lg_remember }}
-                  <label for="lg_remember">{{ loginform.remember_line }}</label>
-                </div>
-              </div>
-              <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+<div class="authorization-container text-center">
+    <div class="logo">{{ loginform.title }}</div>
+    <div class="login-form-1">
+      <form id="login-form" class="text-left" method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+        <div class="login-form-main-message"></div>
+        <div class="main-login-form">
+          <div class="login-group">
+            <div class="form-group">
+              <label for="lg_username" class="sr-only">Логин</label>
+             {{ loginform.lg_username }}
             </div>
-            <div class="etc-login-form">
-              <p><a href="#" class="btn disabled" style="padding: 0px" >{{ loginform.forget_pass_line }}</a></p>
-              <p><a href="{% url 'registration' %}">{{ loginform.registration_page_title }}</a></p>
+            <div class="form-group">
+              <label for="lg_password" class="sr-only">Пароль</label>
+              {{ loginform.lg_password }}
             </div>
-          </form>
+            <div class="form-group login-group-checkbox">
+               {{ loginform.lg_remember }}
+              <label for="lg_remember">{{ loginform.remember_line }}</label>
+            </div>
+          </div>
+          <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
         </div>
+        <div class="etc-login-form">
+          <p><a href="#">{{ loginform.forget_pass_line }}</a></p>
+          <p><a href="{% url 'registration' %}">{{ loginform.registration_page_title }}</a></p>
+        </div>
+      </form>
     </div>
   </div>
 {% endblock %}

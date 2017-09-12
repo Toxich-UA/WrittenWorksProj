@@ -5,4 +5,5 @@ from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = [
     url(r'^task/$', view=test_task, name='task'),
+    url(r'^modal/add_task/$', view=add_task_view, name='add_task'),
 ]

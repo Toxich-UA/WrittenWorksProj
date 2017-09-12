@@ -1,0 +1,16 @@
+{% extends 'templates/_base.html' %}
+{% load staticfiles %}
+
+{% block js_scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+{% endblock %}
+
+{% block css_links %}
+    <link href="{% static 'Login/css/authorization.css' %}" rel="stylesheet">
+
+        {% block css_links_login %}
+        {% endblock %}
+
+{% endblock %}
+
+

@@ -1,15 +1,30 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
     {% block js_scripts %}
     {% endblock %}
+
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
     {% block css_links %}
     {% endblock %}
 </head>
 <body>
 {% block content %}{% endblock %}
-{% block user_scripts %}{% endblock %}
+
+{% block user_scripts %}
+
+{% endblock %}
+ <div class="modal fade" id="modal">
+
+  </div>
+<script src="{% static 'js/my.js' %}"></script>
 </body>
 </html>

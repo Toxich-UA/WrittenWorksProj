@@ -1,72 +1,58 @@
-{% extends 'Login/_login_base.html' %}
+{% extends 'Login/block/_login_base.html' %}
 {% load staticfiles %}
+{% block css_links_login%}
+{% endblock %}
 {% block title %}First Access{% endblock %}
 {% block content %}
-    <div class="navbar navbar-default top-menu hidden-xs">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <span class="navbar-brand">WWP</span>
-            </div>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li><div class="navbar-text">Вы вошли как, {{ user.last_name }}</div></li>
-                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-top-menu" ></i></a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="authorization-container text-center">
-    <div class="logo">Пожалуйста, заполните следующие поля</div>
-
-    <div class="login-form-1">
-        {% if messages %}
-            {% for message in messages %}
-            <div
-                    {% if message.tags %}
-                        class=" {% if message.tags == 'success' %}alert alert-success {% endif %}
-                                {% if message.tags == 'error' %}alert alert-danger {% endif %} "
-                    {% endif %}>
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
-        <form id="first-access-form" class="text-left" method="post">
-            {% csrf_token %}
-            <div class="main-login-form">
-            <div class="login-group">
-                <div class="form-group">
-                    {{ first_access_form.fa_login }}
-                </div>
-                <div id="login-message">
-
-                </div>
-                <div class="form-group">
-                    {{ first_access_form.fa_password }}
-                </div>
-                <div class="form-group">
-                    {{ first_access_form.fa_confirm_password }}
-                </div>
-                <div id="confirm-pass-message">
-
-                </div>
-
-                <div class="form-group login-group-checkbox">
-                <input type="checkbox" id="fa_remember" name="lg_remember">
-                    <label for="fa_remember">Запомнить</label>
-                </div>
-            </div>
-            <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
-            </div>
-        </form>
+   <div class="navbar navbar-default top-menu hidden-xs">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a href="#" class="navbar-brand">WWP</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="#"><i class="fa fa-envelope-o fa-top-menu" aria-hidden="true"></i></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+          <li><div class="navbar-text">Вы вошли как, {{ user.last_name }}</div></li>
+          <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-top-menu" ></i></a></li>
+      </ul>
     </div>
   </div>
 
+
+        <!-- REGISTRATION FORM -->
+<div class="text-center">
+      <div class="logo">Пожалуйста, заполните следующие поля</div>
+	<!-- Main Form -->
+	<div class="login-form-1">
+		<form id="first-access-form" class="text-left" method="post">
+            {% csrf_token %}
+			<div class="login-form-main-message"></div>
+			<div class="main-login-form">
+				<div class="login-group">
+					<div class="form-group">
+						<label for="reg_username" class="sr-only">Логин</label>
+						{{ first_access_form.fa_login }}
+					</div>
+					<div class="form-group">
+						<label for="reg_password" class="sr-only">Пароль</label>
+						{{ first_access_form.fa_password }}
+					</div>
+					<div class="form-group">
+						<label for="reg_password_confirm" class="sr-only">Повторите пароль</label>
+						{{ first_access_form.fa_confirm_password }}
+					</div>
+				</div>
+				<button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+			</div>
+		</form>
+	</div>
+	<!-- end:Main Form -->
+</div>
+
+  <!--Content-->
 {% endblock %}
 
 {% block user_scripts %}
-<script src="{% static "Login/js/validate_first_access.js" %}"
-            data-url="{% url "validate_login" %}"
-            data-LoginID="{{ first_access_form.fa_login.id_for_label }}"
-            data-PasswordID = "{{ first_access_form.fa_password.id_for_label }}"
-            data-ConfirmPassID = "{{ first_access_form.fa_confirm_password.id_for_label }}"></script>
+<script src="{% static "Login/js/validate_first_access.js" %}"></script>
 {% endblock %}

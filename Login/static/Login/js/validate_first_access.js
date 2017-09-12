@@ -1,4 +1,4 @@
-// getting current script
+/*// getting current script
 var scripts = document.getElementsByTagName("script");
 var current_script = scripts[scripts.length-1];
 var script_object = $(current_script);
@@ -44,4 +44,37 @@ $("#".concat(confirmPassId)).bind('input', function () {
     else if(new_pass == conf_pass){
         $("#confirm-pass-message").html(success_confirm_msg);
     }
-});
+});*/
+
+$("#first-access-form").validate({
+    rules: {
+        fa_login:{
+            required: true,
+            minlength: 3
+        },
+        fa_password:{
+            required: true,
+            minlength: 5
+        },
+        fa_confirm_password:{
+            required: true,
+            equalTo: "#password"
+        }
+    },
+
+    messages:{
+         fa_login: {
+             required: 'Поле обязательный для заполнения',
+             minlength: 'Минимальная длина логина – {0} символов'
+         },
+        fa_password:{
+            required: 'Поле обязательный для заполнения',
+            minlength: 'Минимальная длина пароля – {0} символов'
+        },
+        fa_confirm_password:{
+             required: 'Поле обязательный для заполнения',
+            equalTo: 'Пароли не совпадают'
+        }
+    },
+     errorClass: "form-invalid",
+})

@@ -25,3 +25,4 @@ def _load_profile_info(request):
         raise Http404("Page does not exist!")
 
     return render(request, 'Profile/login_success.html', context)
+
