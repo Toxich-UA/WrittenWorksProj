@@ -1,123 +1,55 @@
 {% extends 'templates/_base.html' %}
-{% load staticfiles%}
-{%  block content %}
-  <div class="navbar navbar-default top-menu hidden-xs">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a href="" class="navbar-brand">WWP</a>
-      </div>
-      <ul class="nav navbar-nav">
-        <li><a href="#"><i class="fa fa-envelope-o fa-top-menu" aria-hidden="true"></i></a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><div class="navbar-text">Вы вошли как, {{ user.last_name }}</div></li>
-        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-top-menu" ></i></a></li>
-      </ul>
-
-    </div>
-  </div>
-  <div class="row">
-    <div class="side-menu">
-      <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-          <div class="brand-wrapper">
-            <button type="button" class="navbar-toggle">
-              <span class="sr-only">Меню</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a href="#" class="hidden-lg hidden-md hidden-sm button-exit"><i class="fa fa-sign-out fa-top-menu"></i></a>
-          </div>
-        </div>
-        <div class="side-menu-container">
-            {% include "Profile/sidebar.html" %}
-          </div>
-        </nav>
-      </div>
-  </div>
-      <!--Content-->
-      <div class="container-fluid">
-        <div class="side-body">
-          <div class="tabs">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#active" data-toggle="tab" >Aктивные</a></li>
-              <li><a href="#completed" data-toggle="tab">Выполненные</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="active">
-                <div class="col-lg-12">
-                  <div class="row task-content">
-                   <div class="col-xs-8">
-                     <div class="row header-task">
-                       <div class="col-xs-10 title-task">
-                         <h5><mark><a href="#">Операционные системы Unix и Linux</a></mark></h5>
-                       </div>
-                       <div class="col-xs-2 edit-task"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
-                     </div>
-                     <div class="row pub-info-task">
-                       Автор : Вася Пупкин | Дата : 07.08.1997
-                     </div>
-                     <div class="row description-task" >
-                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, quas?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius voluptatum dolores officiis doloremque temporibus dignissimos numquam nisi, voluptates vel minus ducimus ipsam! Vero aperiam hic, provident repudiandae, tempora dolorem voluptatum.</p>
-                       <div class="task-button">
-                        <a class="btn btn-sm btn-default " href="#" role="button">
-                          Развернуть
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-4 rightbar-task">
-                    <h5>Документы:</h5>
-                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
-                    <div class="box-title-doc"><a href="#">Требования к оформлению курсовых и дипломных проектов</a></div>
-                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
-                    <div class="box-title-doc"><a href="#">Методичка по курсовому проекту</a></div>
-                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
-                    <div class="box-title-doc"><a href="#">Контрольные вопросы.</a></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="row task-content">
-                 <div class="col-xs-8">
-                   <div class="row header-task">
-                     <div class="col-xs-10 title-task">
-                       <h5><mark><a href="#">Операционные системы Unix и Linux</a></mark></h5>
-                     </div>
-                     <div class="col-xs-2 edit-task"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
-                   </div>
-                   <div class="row pub-info-task">
-                     Автор : Вася Пупкин | Дата : 07.08.1997
-                   </div>
-                   <div class="row description-task" >
-                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, quas?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius voluptatum dolores officiis doloremque temporibus dignissimos numquam nisi, voluptates vel minus ducimus ipsam! Vero aperiam hic, provident repudiandae, tempora dolorem voluptatum.</p>
-                     <div class="task-button">
-                      <a class="btn btn-sm btn-default " href="#" role="button">
-                        Развернуть
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xs-4 rightbar-task">
-                  <h5>Документы:</h5>
-                  <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
-                  <div class="box-title-doc"><a href="#">Требования к оформлению курсовых и дипломных проектов</a></div>
-                  <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
-                  <div class="box-title-doc"><a href="#">Методичка по курсовому проекту</a></div>
-                  <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
-                  <div class="box-title-doc"><a href="#">Контрольные вопросы.</a></div>
-                </div>
-              </div>
+{% load staticfiles %}
+{% block content %}
+    <div class="navbar navbar-default top-menu hidden-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="" class="navbar-brand">WWP</a>
             </div>
-          </div>
-          <div class="tab-pane" id="completed">
+            <ul class="nav navbar-nav">
+                <li><a href="#"><i class="fa fa-envelope-o fa-top-menu" aria-hidden="true"></i></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div class="navbar-text">Вы вошли как, {{ user.last_name }}</div>
+                </li>
+                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-top-menu"></i></a></li>
+            </ul>
 
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <!--Content-->
+    <div class="row">
+        <div class="side-menu">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <div class="brand-wrapper">
+                        <button type="button" class="navbar-toggle">
+                            <span class="sr-only">Меню</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="#" class="hidden-lg hidden-md hidden-sm button-exit"><i
+                                class="fa fa-sign-out fa-top-menu"></i></a>
+                    </div>
+                </div>
+                <div class="side-menu-container">
+                    {% include "Profile/sidebar.html" %}
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!--Content-->
+    <div class="container-fluid">
+        <div class="side-body">
+            {% block side-content %}
+            {% endblock %}
+        </div>
+    </div>
+    <!--Content-->
 
+
+{% endblock %}
+{% block user_scripts %}
+    <script src="{% static 'Task/js/show_modal.js' %}"></script>
 {% endblock %}

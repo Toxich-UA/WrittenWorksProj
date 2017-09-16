@@ -19,12 +19,13 @@
 <body>
 {% block content %}{% endblock %}
 
-{% block user_scripts %}
 
-{% endblock %}
  <div class="modal fade" id="modal">
 
   </div>
 <script src="{% static 'js/my.js' %}"></script>
+{% block user_scripts %}
+{% endblock %}
+
 </body>
 </html>

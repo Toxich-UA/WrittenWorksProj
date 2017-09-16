@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Permission
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from Login.property import FAIL_DATA_UPDATE, SUCCESS_DATA_UPDATE, PASSWORD_CONFIRMATION_FAIL, LOGIN_IS_TAKEN, \
     LOGIN_IS_FREE, WRONG_USERNAME_OR_PASSWORD, WRONG_REG_KEY
@@ -139,13 +139,7 @@ def validate_login(request):
         is_taken = User.objects.filter(login=login_value).exists()
     else:
         is_taken = False
-
-    data = {}
-    if is_taken:
-        data['message'] = False
-    else:
-        data['message'] = True
-    return JsonResponse(data)
+    return HttpResponse(str(is_taken))
 #############
 
 def _render_form_error_template(request, template, message, context):
