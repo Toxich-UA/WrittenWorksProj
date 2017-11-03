@@ -1,0 +1,58 @@
+ <div class="navbar navbar-default top-menu hidden-xs">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand">WWP</span>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><div class="navbar-text">Вы вошли как, {{ user.last_name }}</div></li>
+                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-top-menu" ></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="authorization-container text-center">
+    <div class="logo">Пожалуйста, заполните следующие поля</div>
+
+    <div class="login-form-1">
+        {% if messages %}
+            {% for message in messages %}
+            <div
+                    {% if message.tags %}
+                        class=" {% if message.tags == 'success' %}alert alert-success {% endif %}
+                                {% if message.tags == 'error' %}alert alert-danger {% endif %} "
+                    {% endif %}>
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        <form id="first-access-form" class="text-left" method="post">
+            {% csrf_token %}
+            <div class="main-login-form">
+            <div class="login-group">
+                <div class="form-group">
+                    {{ first_access_form.fa_login }}
+                </div>
+                <div id="login-message">
+
+                </div>
+                <div class="form-group">
+                    {{ first_access_form.fa_password }}
+                </div>
+                <div class="form-group">
+                    {{ first_access_form.fa_confirm_password }}
+                </div>
+                <div id="confirm-pass-message">
+
+                </div>
+
+                <div class="form-group login-group-checkbox">
+                <input type="checkbox" id="fa_remember" name="lg_remember">
+                    <label for="fa_remember">Запомнить</label>
+                </div>
+            </div>
+            <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+            </div>
+        </form>
+    </div>
+  </div>

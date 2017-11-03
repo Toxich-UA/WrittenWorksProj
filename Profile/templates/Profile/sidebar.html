@@ -1,0 +1,19 @@
+<ul class="nav navbar-nav left-menu">
+            <li class="panel panel-default" id="dropdown">
+              <a data-toggle="collapse" href="#dropdown-lvl1">
+                <span class="fa fa-tasks fa-left-menu"></span>Задания<span class="caret"></span>
+              </a>
+              <div id="dropdown-lvl1" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <ul class="nav navbar-nav">
+                    <li>
+                      <a data-toggle="modal" href="{% url "add_task" %}" data-target="#modal"><span class="fa fa-plus fa-left-menu"></span>Добавить</a>
+                    </li>
+                    <li><a href="{% url "view_tasks" %}"><span class="fa fa-eye fa-left-menu"></span>Просмотреть</a></li>
+                  </ul>
+                </div>
+              </div>
+              <li>
+                <a href="#"><span class="fa fa-cog fa-left-menu"></span>Настройка</a>
+              </li>
+            </ul>

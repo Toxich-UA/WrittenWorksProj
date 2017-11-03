@@ -1,0 +1,106 @@
+{% extends 'Profile/_profile_base.html' %}
+{% block side-content %}
+    <div class="tabs">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#active" data-toggle="tab">Aктивные</a></li>
+            <li><a href="#completed" data-toggle="tab">Выполненные</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="active">
+                {% for item in tasks_data %}
+                    {% if item.end_time == NULL %}
+                        <div class="col-lg-12">
+                            <div class="row task-content">
+                                <div class="col-xs-8">
+                                    <div class="row ">
+                                        <div class="col-xs-10 title-task">
+                                            <h5>
+                                                <mark><a href="#">{{ item.name }}</a></mark>
+                                            </h5>
+                                        </div>
+                                        <div class="col-xs-2 edit-task"><a href="#"><i class="fa fa-pencil"
+                                                                                       aria-hidden="true"></i></a></div>
+                                    </div>
+                                    <div class="row pub-info-task">
+                                        {% if role == 'student' %}
+                                            Автор : {{ item.teacher.user.first_name }} {{ item.teacher.user.last_name }}
+                                            | Дата : {{ item.creation_date }} | Выполнить до : {{ item.estimated_time }}
+                                        {% elif role == 'teacher' %}
+                                            Группа : {{ item.group }} | Дата : {{ item.creation_date }}
+                                        {% endif %} | Выполнить до : {{ item.estimated_time }}
+                                    </div>
+
+                                    <div class="row description-task">
+                                        <p>{{ item.description }}</p>
+                                        <div class="task-button">
+                                            <a class="btn btn-sm btn-default " href="#" role="button">
+                                                Развернуть
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 rightbar-task">
+                                    <h5>Документы:</h5>
+                                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
+                                    <div class="box-title-doc"><a href="#">Требования к оформлению курсовых и дипломных
+                                        проектов</a></div>
+                                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
+                                    <div class="box-title-doc"><a href="#">Методичка по курсовому проекту</a></div>
+                                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
+                                    <div class="box-title-doc"><a href="#">Контрольные вопросы.</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane" id="completed">
+                {% for item in tasks_data %}
+                    {% if item.end_time != NULL %}
+                        <div class="col-lg-12">
+                            <div class="row task-content">
+                                <div class="col-xs-8">
+                                    <div class="row header-task">
+                                        <div class="col-xs-10 title-task">
+                                            <h5>
+                                                <mark><a href="#">{{ item.name }}</a></mark>
+                                            </h5>
+                                        </div>
+                                        <div class="col-xs-2 edit-task"><a href="#"><i class="fa fa-pencil"
+                                                                                       aria-hidden="true"></i></a></div>
+                                    </div>
+                                    <div class="row pub-info-task">
+                                        {% if role == 'student' %}
+                                            Автор : {{ item.teacher.user.first_name }} {{ item.teacher.user.last_name }}
+                                            | Дата : {{ item.creation_date|date:"d.m.Y" }} | Выполнить до : {{ item.estimated_time }} | Дата завершение {{ item.end_time }}
+                                        {% elif role == 'teacher' %}
+                                            Группа : {{ item.group }} | Дата : {{ item.creation_date }} | Выполнить до : {{ item.estimated_time }} | Дата завершение {{ item.end_time }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="row description-task">
+                                        <p>{{ item.description }}</p>
+                                        <div class="task-button">
+                                            <a class="btn btn-sm btn-default " href="#" role="button">
+                                                Развернуть
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 rightbar-task">
+                                    <h5>Документы:</h5>
+                                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
+                                    <div class="box-title-doc"><a href="#">Требования к оформлению курсовых и дипломных
+                                        проектов</a></div>
+                                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
+                                    <div class="box-title-doc"><a href="#">Методичка по курсовому проекту</a></div>
+                                    <div class="box-fa-doc"><i class="fa fa-file-text"></i></div>
+                                    <div class="box-title-doc"><a href="#">Контрольные вопросы.</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
